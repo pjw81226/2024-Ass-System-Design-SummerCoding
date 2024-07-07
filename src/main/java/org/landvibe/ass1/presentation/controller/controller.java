@@ -1,6 +1,6 @@
-package org.landvibe.ass1.controller;
+package org.landvibe.ass1.presentation.controller;
 
-import org.landvibe.ass1.dummy.Dummy;
+import org.landvibe.ass1.application.dummy.Dummy;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
