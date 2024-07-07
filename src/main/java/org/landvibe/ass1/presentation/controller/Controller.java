@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @RestController
-public class controller {
+public class Controller {
     List<Dummy> data = new ArrayList<>();
     int usage = 0;
 
