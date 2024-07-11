@@ -1,4 +1,4 @@
-package org.landvibe.ass1.application.dummy;
+package org.landvibe.ass1.infrastructure.dummy;
 
 public class Dummy {
     private byte[] data;

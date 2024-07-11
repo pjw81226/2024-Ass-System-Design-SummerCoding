@@ -1,16 +1,14 @@
-package org.landvibe.ass1.domain.model;
+package org.landvibe.ass1.presentation.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-
-@Getter
 @Builder
-@AllArgsConstructor
+@Getter
 @NoArgsConstructor
-public class Book {
-    private Long id;
+@AllArgsConstructor
+public class BookSaveDto {
     private String title;
 }

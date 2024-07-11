@@ -2,8 +2,17 @@ version: '3.7'
 
 services:
   spring-app:
-    build: .
+    build:
+      context: .
+      dockerfile: Dockerfile
     container_name: spring-app
+    depends_on:
+      - mysql
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/ass_system
+      SPRING_DATASOURCE_USERNAME: ass_system_user
+      SPRING_DATASOURCE_PASSWORD: password
+      SPRING_DATASOURCE_DRIVER_CLASS_NAME: com.mysql.cj.jdbc.Driver
     ports:
       - "8080:8080"
     networks:
@@ -34,22 +43,24 @@ services:
     networks:
       - monitoring
 
-  db:
+  mysql:
     image: mysql:latest
-    container_name: mysql
-    restart: always
-    ports:
-      - "3306:3306"
+    container_name: mysql_container
     environment:
       MYSQL_ROOT_PASSWORD: password
       MYSQL_DATABASE: ass_system
       MYSQL_USER: ass_system_user
       MYSQL_PASSWORD: password
-
-
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+    networks:
+      - monitoring
 
 volumes:
   grafana-storage:
+  mysql_data:
 
 networks:
   monitoring:
