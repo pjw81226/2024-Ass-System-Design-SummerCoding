@@ -9,3 +9,10 @@
 
 ## 심화요구사항(선택사항)
 - 부하테스트를 수행하면서 rate limiter가 정상적으로 동작하는지 확인
+
+## 과제 완료
+- nginx를 이용해서 로드밸런싱
+- 부화를 줄여줄 각 서버는 docker container에 담아서 실행
+  - 서버는 spring-app1 , spring-app2 두개로 진행
+- redis에 spring server에 대한 log 기록
+- contorller 에서 log를 찍고 확인했을 때, 두 서버에 동등한 비율로 요청이 들어가는 것을 확인함
