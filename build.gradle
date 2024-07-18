@@ -25,16 +25,37 @@ repositories {
 }
 
 dependencies {
+    // Spring Boot Web
     implementation 'org.springframework.boot:spring-boot-starter-web'
+
+    // Spring Boot Actuator
     implementation 'org.springframework.boot:spring-boot-starter-actuator'
+
+    // Prometheus
     implementation 'io.micrometer:micrometer-registry-prometheus'
+
+    // Lombok
     compileOnly 'org.projectlombok:lombok'
     annotationProcessor 'org.projectlombok:lombok'
+
+    // Spring Boot Test
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
-    //db
+
+    // Spring Boot JDBC
     implementation 'org.springframework.boot:spring-boot-starter-jdbc'
+
+    // MySQL Connector
     runtimeOnly 'com.mysql:mysql-connector-j'
+
+    // Spring Boot Redis
+    implementation 'org.springframework.boot:spring-boot-starter-data-redis'
+
+    // Spring Boot AOP
+    implementation 'org.springframework.boot:spring-boot-starter-aop'
+
+    // Guava RateLimiter
+    implementation 'com.google.guava:guava:32.0.0-android'
 }
 
 tasks.named('test') {
