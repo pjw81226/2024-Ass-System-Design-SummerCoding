@@ -1,6 +1,7 @@
 package org.landvibe.ass1.presentation.controller;
 
 import lombok.RequiredArgsConstructor;
+import org.apache.coyote.Response;
 import org.landvibe.ass1.application.service.BookApplicationService;
 import org.landvibe.ass1.domain.model.Book;
 import org.landvibe.ass1.presentation.dto.BookSaveDto;
@@ -22,6 +23,15 @@ public class BookController {
             return ResponseEntity.ok("Book Saved SuccessFully");
         }
         return ResponseEntity.status(500).body("Failed to save the book.");
+    }
+
+    @PostMapping("/{id}")
+    public ResponseEntity<String> updateBook(@PathVariable Long id, @RequestBody BookSaveDto bookSaveDto) {
+        int result = bookApplicationService.updateBook(bookSaveDto, id);
+        if (result == 1) {
+            return ResponseEntity.ok("Book Updated SuccessFully");
+        }
+        return ResponseEntity.status(500).body("Failed to update the book.");
     }
 
     @GetMapping("/{id}")

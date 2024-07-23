@@ -40,6 +40,16 @@ public class JdbcBookRepository implements BookRepository {
         return jdbcTemplate.update("Insert Into book (title) values (?)", bookEntity.getTitle());
     }
 
+    @Override
+    public int update(String title, Long id){
+        return jdbcTemplate.update("UPDATE book SET title = ? WHERE id = ?", title, id);
+    }
+
+
+
+
+
+
     private static class BookEntityRowMapper implements RowMapper<BookEntity> {
         @Override
         public BookEntity mapRow(ResultSet rs, int rowNum) throws SQLException {

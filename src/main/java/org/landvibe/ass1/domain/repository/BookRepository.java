@@ -11,4 +11,6 @@ public interface BookRepository {
     List<Book> findAllBooks();
 
     int save(Book book);
+
+    int update(String title, Long id);
 }

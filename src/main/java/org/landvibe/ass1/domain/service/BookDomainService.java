@@ -18,6 +18,10 @@ public class BookDomainService {
         return bookRepository.save(book);
     }
 
+    public int updateBook(String title, Long id) {
+        return bookRepository.update(title, id);
+    }
+
     public Book getBookById(Long id) {
         return bookRepository.findBookById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Book Not Found With Id: " + id));

@@ -20,6 +20,10 @@ public class BookApplicationService {
         return bookDomainService.saveBook(book);
     }
 
+    public int updateBook(BookSaveDto bookSaveDto, Long id) {
+        return bookDomainService.updateBook(bookSaveDto.getTitle(), id);
+    }
+
     public Book getBookById(Long id) {
         return bookDomainService.getBookById(id);
     }

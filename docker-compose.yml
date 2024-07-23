@@ -8,11 +8,14 @@ services:
     container_name: spring-app
     depends_on:
       - mysql
+      - redis
     environment:
       SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/ass_system
       SPRING_DATASOURCE_USERNAME: ass_system_user
       SPRING_DATASOURCE_PASSWORD: password
       SPRING_DATASOURCE_DRIVER_CLASS_NAME: com.mysql.cj.jdbc.Driver
+      SPRING_REDIS_HOST: redis
+      SPRING_REDIS_PORT: 6379
     ports:
       - "8080:8080"
     networks:
@@ -55,6 +58,14 @@ services:
       - "3306:3306"
     volumes:
       - mysql_data:/var/lib/mysql
+    networks:
+      - monitoring
+
+  redis:
+    image: redis:alpine
+    container_name: redis
+    ports:
+      - "6379:6379"
     networks:
       - monitoring
 

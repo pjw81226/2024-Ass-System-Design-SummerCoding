@@ -35,6 +35,11 @@ dependencies {
     //db
     implementation 'org.springframework.boot:spring-boot-starter-jdbc'
     runtimeOnly 'com.mysql:mysql-connector-j'
+    //aop
+    implementation 'org.springframework.boot:spring-boot-starter-aop'
+    //redis
+    implementation 'org.springframework.boot:spring-boot-starter-data-redis'
+
 }
 
 tasks.named('test') {
