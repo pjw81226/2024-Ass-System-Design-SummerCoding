@@ -27,7 +27,7 @@ public class BookController {
 
     @PostMapping("/{id}")
     public ResponseEntity<String> updateBook(@PathVariable Long id, @RequestBody BookSaveDto bookSaveDto) {
-        int result = bookApplicationService.updateBook(bookSaveDto, id);
+        int result = bookApplicationService.updateBook( id, bookSaveDto);
         if (result == 1) {
             return ResponseEntity.ok("Book Updated SuccessFully");
         }

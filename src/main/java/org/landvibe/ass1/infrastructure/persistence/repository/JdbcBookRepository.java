@@ -45,11 +45,6 @@ public class JdbcBookRepository implements BookRepository {
         return jdbcTemplate.update("UPDATE book SET title = ? WHERE id = ?", title, id);
     }
 
-
-
-
-
-
     private static class BookEntityRowMapper implements RowMapper<BookEntity> {
         @Override
         public BookEntity mapRow(ResultSet rs, int rowNum) throws SQLException {

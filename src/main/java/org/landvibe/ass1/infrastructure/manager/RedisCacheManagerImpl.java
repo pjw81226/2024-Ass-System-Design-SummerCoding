@@ -6,7 +6,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 @RequiredArgsConstructor
-public class RedisCacheManagerImpl implements CacheManger {
+public class RedisCacheManagerImpl implements CacheManager {
     private final RedisTemplate<String, Object> redisTemplate;
 
     @Override

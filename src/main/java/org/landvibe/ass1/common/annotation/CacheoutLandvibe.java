@@ -7,7 +7,7 @@ import java.lang.annotation.Target;
 
 @Target(ElementType.METHOD)
 @Retention(RetentionPolicy.RUNTIME)
-public @interface CatchoutLandvibe {
+public @interface CacheoutLandvibe {
     String key();
-    String catchManager();
+    String cacheManager() default "books"; // 캐싱의 대상
 }
