@@ -1,5 +1,13 @@
 version: '3.7'
 
+volumes:
+  Kafka00:
+    driver: local
+  Kafka01:
+    driver: local
+  Kafka02:
+    driver: local
+
 services:
   nginx:
     image: nginx:latest
@@ -32,6 +40,10 @@ services:
       - kafkaNet
     environment:
       - SPRING_PROFILES_ACTIVE=was1
+    depends_on:
+      - Kafka00Service
+      - Kafka01Service
+      - Kafka02Service
   was2:
     build: .
     container_name: was2
@@ -41,6 +53,10 @@ services:
       - kafkaNet
     environment:
       - SPRING_PROFILES_ACTIVE=was2
+    depends_on:
+      - Kafka00Service
+      - Kafka01Service
+      - Kafka02Service
   was3:
     build: /Users/parkjw/Desktop/study/demo
     container_name: was3
@@ -50,7 +66,112 @@ services:
       - "8083:8083"
     networks:
       - kafkaNet
+    depends_on:
+      - Kafka00Service
+      - Kafka01Service
+      - Kafka02Service
 
+  ##Kafka 00
+  ##Kafka 00
+  Kafka00Service:
+    image: bitnami/kafka:3.5.1-debian-11-r72
+    restart: unless-stopped
+    container_name: Kafka00Container
+    ports:
+      - '10000:9094'
+    environment:
+      - KAFKA_CFG_AUTO_CREATE_TOPICS_ENABLE=true
+      # KRaft settings
+      - KAFKA_CFG_BROKER_ID=0
+      - KAFKA_CFG_NODE_ID=0
+      - KAFKA_KRAFT_CLUSTER_ID=HsDBs9l6UUmQq7Y5E6bNlw
+      - KAFKA_CFG_CONTROLLER_QUORUM_VOTERS=0@Kafka00Service:9093,1@Kafka01Service:9093,2@Kafka02Service:9093
+      - KAFKA_CFG_PROCESS_ROLES=controller,broker
+      # Listeners
+      - ALLOW_PLAINTEXT_LISTENER=yes
+      - KAFKA_CFG_LISTENERS=PLAINTEXT://:9092,CONTROLLER://:9093,EXTERNAL://:9094
+      - KAFKA_CFG_ADVERTISED_LISTENERS=PLAINTEXT://Kafka00Service:9092,EXTERNAL://127.0.0.1:10000
+      - KAFKA_CFG_LISTENER_SECURITY_PROTOCOL_MAP=CONTROLLER:PLAINTEXT,EXTERNAL:PLAINTEXT,PLAINTEXT:PLAINTEXT
+      - KAFKA_CFG_CONTROLLER_LISTENER_NAMES=CONTROLLER
+      - KAFKA_CFG_INTER_BROKER_LISTENER_NAME=PLAINTEXT
+    networks:
+      - kafkaNet
+    volumes:
+      - "Kafka00:/bitnami/kafka"
+    command: >
+      bash -c "
+      /opt/bitnami/scripts/kafka/run.sh &&
+      kafka-topics.sh --create --topic landvibe_topic --bootstrap-server Kafka00Service:9092 --partitions 1 --replication-factor 1
+      "
+
+  ##Kafka 01
+  Kafka01Service:
+    image: bitnami/kafka:3.5.1-debian-11-r72
+    restart: unless-stopped
+    container_name: Kafka01Container
+    ports:
+      - '10001:9094'
+    environment:
+      - KAFKA_CFG_AUTO_CREATE_TOPICS_ENABLE=true
+      # KRaft settings
+      - KAFKA_CFG_BROKER_ID=1
+      - KAFKA_CFG_NODE_ID=1
+      - KAFKA_KRAFT_CLUSTER_ID=HsDBs9l6UUmQq7Y5E6bNlw
+      - KAFKA_CFG_CONTROLLER_QUORUM_VOTERS=0@Kafka00Service:9093,1@Kafka01Service:9093,2@Kafka02Service:9093
+      - KAFKA_CFG_PROCESS_ROLES=controller,broker
+      # Listeners
+      - ALLOW_PLAINTEXT_LISTENER=yes
+      - KAFKA_CFG_LISTENERS=PLAINTEXT://:9092,CONTROLLER://:9093,EXTERNAL://:9094
+      - KAFKA_CFG_ADVERTISED_LISTENERS=PLAINTEXT://Kafka01Service:9092,EXTERNAL://127.0.0.1:10001
+      - KAFKA_CFG_LISTENER_SECURITY_PROTOCOL_MAP=CONTROLLER:PLAINTEXT,EXTERNAL:PLAINTEXT,PLAINTEXT:PLAINTEXT
+      - KAFKA_CFG_CONTROLLER_LISTENER_NAMES=CONTROLLER
+      - KAFKA_CFG_INTER_BROKER_LISTENER_NAME=PLAINTEXT
+    networks:
+      - kafkaNet
+    volumes:
+      - "Kafka01:/bitnami/kafka"
+  ##Kafka 02
+  Kafka02Service:
+    image: bitnami/kafka:3.5.1-debian-11-r72
+    restart: unless-stopped
+    container_name: Kafka02Container
+    ports:
+      - '10002:9094'
+    environment:
+      - KAFKA_CFG_AUTO_CREATE_TOPICS_ENABLE=true
+      # KRaft settings
+      - KAFKA_CFG_BROKER_ID=2
+      - KAFKA_CFG_NODE_ID=2
+      - KAFKA_KRAFT_CLUSTER_ID=HsDBs9l6UUmQq7Y5E6bNlw
+      - KAFKA_CFG_CONTROLLER_QUORUM_VOTERS=0@Kafka00Service:9093,1@Kafka01Service:9093,2@Kafka02Service:9093
+      - KAFKA_CFG_PROCESS_ROLES=controller,broker
+      # Listeners
+      - ALLOW_PLAINTEXT_LISTENER=yes
+      - KAFKA_CFG_LISTENERS=PLAINTEXT://:9092,CONTROLLER://:9093,EXTERNAL://:9094
+      - KAFKA_CFG_ADVERTISED_LISTENERS=PLAINTEXT://Kafka02Service:9092,EXTERNAL://127.0.0.1:10002
+      - KAFKA_CFG_LISTENER_SECURITY_PROTOCOL_MAP=CONTROLLER:PLAINTEXT,EXTERNAL:PLAINTEXT,PLAINTEXT:PLAINTEXT
+      - KAFKA_CFG_CONTROLLER_LISTENER_NAMES=CONTROLLER
+      - KAFKA_CFG_INTER_BROKER_LISTENER_NAME=PLAINTEXT
+    networks:
+      - kafkaNet
+    volumes:
+      - "Kafka02:/bitnami/kafka"
+
+  KafkaWebUiService:
+    image: provectuslabs/kafka-ui:latest
+    restart: unless-stopped
+    container_name: KafkaWebUiContainer
+    ports:
+      - '8080:8080'
+    environment:
+      - KAFKA_CLUSTERS_0_NAME=Local-Kraft-Cluster
+      - KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS=Kafka00Service:9092,Kafka01Service:9092,Kafka02Service:9092
+      - DYNAMIC_CONFIG_ENABLED=true
+      - KAFKA_CLUSTERS_0_AUDIT_TOPICAUDITENABLED=true
+      - KAFKA_CLUSTERS_0_AUDIT_CONSOLEAUDITENABLED=true
+      #- KAFKA_CLUSTERS_0_METRICS_PORT=9999
+    networks:
+      - kafkaNet
 
 
 networks:
